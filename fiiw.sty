@@ -1,0 +1,510 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		This syntax file is intended for students of the                      %
+%		FIIW writing their master thesis.                                     %
+%		We hope they can use it as a helping hand in writing their thesis.    %
+%                                                                             %
+%		History :                                                             %
+%		- Syntax originally written by Filip Van Rysselberghe                 %
+%		- Adapted for KaHo St. Lieven by Bart Blanckaert                      %
+%		- Modified by Koen Vangheluwe based on PhD stylefile of RUG           %
+%		- Adapted for FIIW by Jannes Verstichel (v1.2)                        %
+%		- Rewritten by Jeroen Van Aken: one package for all campuses (v2.0)   %
+%		Last modified: 01/12/2014 v2.0                                        %
+%                                                                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{fiiw}[2017/12/01 FIIW Master Thesis template package]
+\RequirePackage[a4paper,left=3.5cm, right=2.5cm, top=3.5cm, bottom=3.5cm]{geometry}
+\RequirePackage{multirow,tabularx}
+\RequirePackage{fancyhdr}
+\PassOptionsToPackage{final}{pdfpages}
+\RequirePackage{pdfpages}
+\RequirePackage{pslatex}
+\RequirePackage{eso-pic}
+\RequirePackage[small,bf,hang]{caption}     % better markup for captions
+\RequirePackage{etoolbox}
+\RequirePackage{titlesec,titletoc}
+\RequirePackage[titletoc,toc]{appendix}
+
+\PassOptionsToPackage{dutch,english}{babel}
+\RequirePackage{babel}
+
+\newif\if@acknowledgements\@acknowledgementstrue
+\DeclareOption{noacknowledgements}{
+	\@acknowledgementsfalse
+}
+
+\newif\if@abstract\@abstracttrue
+\DeclareOption{noabstract}{
+	\@abstractfalse
+}
+
+\newif\if@extendedabstract\@extendedabstracttrue
+\DeclareOption{noextendedabstract}{
+	\@extendedabstractfalse
+}
+
+\newif\if@listoffigurespage\@listoffigurespagetrue
+\DeclareOption{nolistoffigures}{
+	\@listoffigurespagefalse
+}
+
+\newif\if@listoftablespage\@listoftablespagetrue
+\DeclareOption{nolistoftables}{
+	\@listoftablespagefalse
+}
+
+\newif\if@listofsymbols\@listofsymbolstrue
+\DeclareOption{nolistofsymbols}{
+	\@listofsymbolsfalse
+}
+
+\DeclareOption{groept}{
+	\def\@campus{Campus GROUP T Leuven}
+	\def\@campusStreet{Andreas Vesaliusstraat 13}
+	\def\@campusCity{3000 Leuven}
+	\def\@campusCountry{Belgium}
+	\def\@campusPhone{+32 16 30 10 30}
+	\def\@campusFax{+32 16 30 10 40}
+	\def\@campusEmail{fet.groupt@kuleuven.be}
+	\addto\extrasdutch{
+		\renewcommand{\@campus}{Campus GROEP T Leuven}
+		\renewcommand{\@campusEmail}{iiw.groept@kuleuven.be}
+		\renewcommand{\@campusCountry}{Belgi\"e}
+	}
+}
+
+\DeclareOption{denayer}{
+	\def\@campus{Technology Campus De Nayer}
+	\def\@campusStreet{Jan De Nayerlaan 5}
+	\def\@campusCity{2860 Sint-Katelijne-Waver}
+	\def\@campusCountry{Belgium}
+	\def\@campusPhone{+32 15 31 69 44}
+	\def\@campusFax{+32 15 31 74 53}
+	\def\@campusEmail{fet.denayer@kuleuven.be}
+	\addto\extrasdutch{
+		\renewcommand{\@campus}{Technologiecampus De Nayer}
+		\renewcommand{\@campusEmail}{iiw.denayer@kuleuven.be}
+		\renewcommand{\@campusCountry}{Belgi\"e}
+	}
+}
+
+\DeclareOption{gent}{
+	\def\@campus{Technology Campus Gent}
+	\def\@campusStreet{Gebroeders De Smetstraat 1}
+	\def\@campusCity{8200 Gent}
+	\def\@campusCountry{Belgium}
+	\def\@campusPhone{+32 50 66 48 00}
+	\def\@campusFax{}
+	\def\@campusEmail{fet.gent@kuleuven.be}
+	\addto\extrasdutch{
+		\renewcommand{\@campus}{Technologiecampus Gent}
+		\renewcommand{\@campusEmail}{iiw.gent@kuleuven.be}
+		\renewcommand{\@campusCountry}{Belgi\"e}
+	}
+}
+
+\DeclareOption{geel}{
+	\def\@campus{Campus Geel}
+	\def\@campusStreet{Kleinhoefstraat 4}
+	\def\@campusCity{2440 Geel}
+	\def\@campusCountry{Belgium}
+	\def\@campusPhone{+32 14 80 22 40}
+	\def\@campusFax{}
+	\def\@campusEmail{fet.geel@kuleuven.be}
+	\addto\extrasdutch{
+		\renewcommand{\@campus}{Campus Geel}
+		\renewcommand{\@campusEmail}{iiw.geel@kuleuven.be}
+		\renewcommand{\@campusCountry}{Belgi\"e}
+	}
+}
+
+\DeclareOption{brugge}{
+	\def\@campus{Campus Brugge}
+	\def\@campusStreet{Spoorwegstraat 12}
+	\def\@campusCity{8200 Brugge}
+	\def\@campusCountry{Belgium}
+	\def\@campusPhone{+32 50 66 48 00}
+	\def\@campusFax{}
+	\def\@campusEmail{fet.brugge@kuleuven.be}
+	\addto\extrasdutch{
+		\renewcommand{\@campus}{Campus Brugge}
+		\renewcommand{\@campusEmail}{iiw.brugge@kuleuven.be}
+		\renewcommand{\@campusCountry}{Belgi\"e}
+	}
+}
+
+\ExecuteOptions{groept}
+
+\ProcessOptions\relax
+
+\def\@faculty{Faculty of Engineering Technology}
+\def\@facultyWebsite{www.iiw.kuleuven.be}
+\def\@academicyearlabel{Academic Year}
+\def\@promotorlabel{Promotor(s)}
+\def\@copromotorlabel{Co-promotor(s)}
+\def\@memberlabel{Member of}
+\def\@coverText{Master Thesis submitted to obtain the degree of Master of Science in Engineering Technology: \@program}
+\def\@copyright{Without written permission of the supervisor(s) and the author(s) it is forbidden to reproduce or adapt in any form or by any means any part of this publication. Requests for obtaining the right to reproduce or utilise parts of this publication should be addressed to KU Leuven, \@campus, \@campusStreet, \@campusCity, \@campusPhone or via e-mail \@campusEmail}
+\def\@copyrightmaterial{A written permission of the supervisor(s) is also required to use the methods, products, schematics and programs described in this work for industrial or commercial use, and for submitting this publication in scientific contests.}
+\def\@acknowledgementslabel{Acknowledgements}
+\def\@listofsymbolslabel{List of Symbols}
+\def\@embargotext{This Master’s Thesis is under embargo until}
+
+\addto\extrasdutch{%
+	\renewcommand{\@faculty}{Faculteit industri\"ele ingenieurswetenschappen}%
+	\renewcommand{\@academicyearlabel}{Academiejaar}%
+	\renewcommand{\@promotorlabel}{Promotor(en)}
+	\renewcommand{\@copromotorlabel}{Co-promotor(en)}
+	\renewcommand{\@memberlabel}{Lid van}%
+	\renewcommand{\@coverText}{Masterproef ingediend tot het behalen van de graad van master of Science in de industri\"ele wetenschappen: \@program}%
+	\renewcommand{\@copyright}{Zonder voorafgaande schriftelijke toestemming van zowel de promotor(en) als de auteur(s) is overnemen, kopi\"eren, gebruiken of realiseren van deze uitgave of gedeelten ervan verboden. Voor aanvragen i.v.m.~het overnemen en/of gebruik en/of realisatie van gedeelten uit deze publicatie, kan u zich richten tot KU Leuven \@campus, \@campusStreet, \@campusCity, \@campusPhone of via e-mail \@campusEmail}%
+	\renewcommand{\@copyrightmaterial}{Voorafgaande schriftelijke toestemming van de promotor(en) is eveneens vereist voor het aanwenden van de in deze masterproef beschreven (originele) methoden, producten, schakelingen en programma's voor industrieel of commercieel nut en voor de inzending van deze publicatie ter deelname aan wetenschappelijke prijzen of wedstrijden.}
+	\renewcommand{\@acknowledgementslabel}{Dankwoord}
+	\renewcommand{\@listofsymbolslabel}{Lijst van symbolen}
+	\renewcommand{\@embargotext}{Deze masterproefscriptie staat onder embargo tot}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% We'll head off with the definitions of the new commands %
+%	as promotor, copromotor, etc			  			  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\subtitle#1{\gdef\@subtitle{#1}}
+\def\promotor#1{\gdef\@promotorname{#1}}
+\def\copromotor#1{\gdef\@copromotorname{#1}}
+\def\program#1{\gdef\@program{#1}}
+\def\academicyear#1{\gdef\@academicyear{#1}}
+\def\firstnameA#1{\gdef\@firstnameA{#1}}
+\def\lastnameA#1{\gdef\@lastnameA{#1}}
+\def\firstnameB#1{\gdef\@firstnameB{#1}}
+\def\lastnameB#1{\gdef\@lastnameB{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Secondly we declare and fill in the newly created variables       %
+%   Sometimes we use standard definitions as is the case for        %
+%	the titles.						   					            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\@title{Thesis Title}
+\def\@subtitle{Subtitle (if any)}
+\def\@firstnameA{Firstname}
+\def\@lastnameA{Lastname}
+\def\@firstnameB{}
+\def\@lastnameB{}
+\def\@program{Engineering Department}
+\def\@promotorname{} 
+\def\@copromotorname{}
+\def\@academicyear{}
+
+\newif\if@acknowledgementsdef\@acknowledgementsdeffalse
+\def\acknowledgementsfile#1{\@acknowledgementsdeftrue\gdef\@acknowledgementsfile{\input{#1}}}
+
+\newif\if@abstractdef\@abstractdeffalse
+\def\abstractfile#1{\@abstractdeftrue\gdef\@abstractfile{\input{#1}}}
+
+\newif\if@extendedabstractdef\@extendedabstractdeffalse
+\def\extendedabstractfile#1{\@extendedabstractdeftrue\gdef\@extendedabstractfile{\input{#1}}}
+
+\newif\if@listofsymbolsdef\@listofsymbolsdeffalse
+\def\listofsymbolsfile#1{\@listofsymbolsdeftrue\gdef\@listofsymbolsfile{\input{#1}}}
+
+\newif\if@embargoshow\@embargoshowfalse
+\def\embargo#1{\@embargoshowtrue\gdef\@embargo{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Basic styling and indentation settings			   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{titlegreen}{RGB}{29,141,176}
+\definecolor{kullightblue}{RGB}{82,189,236}
+
+%\setlength{\parindent}{0pt}
+%\setlength{\parskip}{1ex plus 0.5ex minus 0.25ex}
+%\setlength{\abovedisplayskip}{12pt plus 3pt}
+%\setlength{\belowdisplayskip}{12pt plus 3pt}
+%\setlength{\abovedisplayshortskip}{12pt plus 3pt}
+%\setlength{\belowdisplayshortskip}{12pt plus 3pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.7em}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Font and header styling							   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\titlecontents{chapter}[0em]
+	{\vskip 0.5ex}% before
+	{\hskip1.5em\scshape\contentslabel{1.5em}}% numbered sections formattin
+	{\scshape}% unnumbered sections formatting
+	{\titlerule*[1pc]{.}\contentspage}% after
+	
+\titlespacing{\chapter}{0pt}{2cm}{1cm}  %{left} {before} {after} {right}
+	
+\titlecontents{section}[4em]
+	{\vskip 0.5ex}% before
+	{\contentslabel{2em}}% numbered sections formattin
+	{}% unnumbered sections formatting
+	{\titlerule*[1pc]{.}\contentspage}% after
+
+\renewcommand*\familydefault{\sfdefault} 
+
+\pagestyle{plain}
+\fancyhf{}
+\@ifclasswith{report}{twoside} {
+	\fancyhead[LE,RO]{\scriptsize\bfseries\sffamily\thepage}
+	\fancyhead[LO,RE]{\scriptsize\bfseries\sffamily\leftmark}
+}{
+	\fancyhead[C]{\scriptsize\bfseries\sffamily\thepage}
+	\fancyhead[L]{\scriptsize\bfseries\sffamily\leftmark}
+}
+\fancypagestyle{plain}{
+	\fancyhf{}
+	\fancyfoot[C]{\scriptsize\bfseries\sffamily\thepage}
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0pt}
+}
+
+% adapt font and layout for headings
+\titleformat{\section}[block]
+		{\normalfont\large}	% format for the full title
+		{\thesection} %label
+		{1em}	%seperation between label and title body
+		{}	%between label and title
+		[] %after
+
+\def\cleardoublepage{%
+	\clearpage\if@twoside \ifodd\c@page\else
+	\hbox{}
+	\thispagestyle{empty}
+	\newpage
+	\if@twocolumn\hbox{}\newpage\fi\fi\fi
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Declare the specification for the watermarks	   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand\BackgroundSedes{%
+	\put(0,0){%
+		\parbox[b][\paperheight]{\paperwidth}{%
+			\vfill\hfill%
+			\includegraphics[width=11cm,keepaspectratio]{images/logos/sedes.png}%
+			\hspace{1.2cm}\vspace{1.8cm}%
+		}
+	}
+}
+
+\newcommand\Backgroundlogo{%
+	\put(0,0){%
+		\parbox[b][\paperheight]{\paperwidth}{%
+			\vspace{1.8cm}\hfill%
+			\includegraphics[height=2cm,keepaspectratio]{images/logos/kuleuven_side.png}%
+			\vfill%
+		}
+	}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Style appendix and appendixpage					   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\appto{\appendix}{%
+	\titleformat{\chapter}[block]
+		{\normalfont\large\bfseries}	% format for the full title
+		{\MakeUppercase{\chaptertitlename}\space\thechapter\space:} %label
+		{1em}	%seperation between label and title body
+		{\MakeUppercase}	%between label and title
+		[\vskip-3em] %after
+}
+
+\renewcommand{\@chap@pppage}{%
+	\clear@ppage
+	\thispagestyle{plain}%
+	\markboth{}{}%
+	\if@dotoc@pp
+		\addappheadtotoc
+	\fi
+	\AddToShipoutPicture*{\Backgroundlogo}
+	{\normalfont\Large\MakeUppercase{\appendixpagename}\vskip0.5em\titlerule}
+	%\chapter*{\appendixpagename}
+	\startcontents[chapter]
+	\printcontents[chapter]{l}{0}{\setcounter{tocdepth}{1}}
+	\vfil\cleardoublepage
+	\renewcommand*{\thepage}{\thechapter-\arabic{page}}
+	\setcounter{page}{1}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	This function formats the titlepage using the	   %
+%	variables set before.                	           %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\titlep{%
+	\thispagestyle{empty}\fontsize{12pt}{14pt}\selectfont%
+	\newgeometry{top=2.54cm,bottom=1.7cm,left=1.27cm,right=1.27cm}%
+	\setlength{\unitlength}{1cm}%
+	\AddToShipoutPicture*{\BackgroundSedes} %
+	\colorbox{titlegreen}{ %
+		\parbox[t][2.35cm]{\linewidth-4mm}{ %
+			\raisebox{-0.8cm}[0cm][0cm]{\hskip+0.55cm\includegraphics[width=5.4cm]{./images/logos/KULEUVEN_CMYK_LOGO.eps}}%
+			\vskip0.20cm %
+			\fontsize{14pt}{14pt}\selectfont\textcolor{white}{ %
+				\hfill\parbox{10cm}{\raggedleft\MakeUppercase{\@faculty}\\\vskip+0.5cm\MakeUppercase{\@campus}\\}\hspace{4mm}%
+			}%
+		}%
+	}
+	
+	\if@embargoshow
+	\raisebox{-0.7cm}[0cm][0cm]{ %take this out of the flow so it does not affect positions when not displayed
+		\parbox{\linewidth-0.6cm}{%
+			\raggedleft\textcolor{titlegreen}{%
+			{\fontsize{14pt}{14pt}\selectfont\MakeUppercase{Embargo}}\\
+			\fontsize{10pt}{10pt}\selectfont
+			\@embargotext\space\@embargo}
+		}
+	}%
+	\fi%
+	\vskip5cm
+	\hspace{1.27cm}\parbox{\textwidth-2.54cm}{
+		\fontsize{40pt}{40pt}\selectfont\raggedright %
+		\textcolor{titlegreen}{{\textsf{\@title}}}\par\vspace{-15pt}
+		{\LARGE\textsf{\@subtitle}}
+	}
+	\vfill
+	
+	\parbox{\linewidth-0.6cm}{\raggedleft\LARGE 
+		\@firstnameB~\MakeUppercase{\@lastnameB}\\\vspace{0.5em} 
+		\@firstnameA~\MakeUppercase{\@lastnameA} 
+	}
+	\vskip3.2cm
+	\hfill %
+	\begin{tabular}{p{3cm}p{4.5cm}p{8cm}}
+		\@promotorlabel: & 	\@promotorname
+		& \multirow{4}{8cm}{\raggedleft\raggedbottom\@coverText\vfill}\\
+		\@copromotorlabel: & \@copromotorname 
+		&  \\
+	\end{tabular}
+	\vspace{1.5cm}
+	
+	\parbox{\linewidth-0.6cm}{\raggedleft\@academicyearlabel~\@academicyear}
+	
+	\vspace{0.2cm}\setlength\fboxsep{0pt}
+	\colorbox{titlegreen}{\hbox to \linewidth{\rule{0pt}{2mm}\hfill}}
+	\cleardoublepage
+	\restoregeometry
+	\thispagestyle{empty}
+	\null
+	\vfill\fontsize{10pt}{12pt}\selectfont
+	\copyright Copyright KU Leuven \par\vskip2em
+	\@copyright \par\vskip2em
+	\@copyrightmaterial
+	\cleardoublepage
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	This function formats the backcover using the	   %
+%	variables set before.                	           %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\backcover{%
+	\cleardoublepage %start at front
+	\ClearShipoutPicture
+	\thispagestyle{empty}\null\clearpage % put in empty page, so cover is on back
+	\thispagestyle{empty}
+	\newgeometry{top=2.54cm,bottom=1.5cm,left=1.2cm,right=1.2cm} 
+	\hfill\begin{minipage}{5.3cm}\vfill
+		\colorbox{kullightblue}{
+			%first box for lightblue border
+			\vbox to 2cm{\hbox to 5cm{
+					\hskip-5.4cm\raisebox{-0.2cm}[0pt][0pt]{\colorbox{white}{
+						%second box with fixed height to contain image and text
+						\parbox[t][3cm][t]{10cm}{
+						\flushleft\vskip-4mm % fix for underfull box
+							%image (taken out of flow)
+							\hskip8.7cm\raisebox{-1.65cm}[0pt][0pt]{\includegraphics[height=1.5cm]{./images/logos/sedes.eps}}
+							%textbox right aligned
+							\vskip-0.2cm\parbox{8.3cm}{
+								\flushright\fontsize{7pt}{7pt}\selectfont\MakeUppercase{\@faculty}\\ %
+								\MakeUppercase{\@campus}\\ %
+								\fontsize{6pt}{6pt}\selectfont
+								\@campusStreet\\ %
+								\MakeUppercase{\@campusCity}, \@campusCountry\\ %
+								tel. \@campusPhone\\ %
+								fax \@campusFax\\ %
+								\@campusEmail\\ %
+								\@facultyWebsite\\ %
+							}\vfill
+						}
+					}}
+				}\vfill}
+		}
+	\end{minipage}
+	\vfill
+	\hspace{15cm}\rotatebox{90}{\parbox{1.2cm}{\centering\fontsize{5pt}{5pt}\selectfont \MakeUppercase{\@memberlabel}}}\hskip1mm\includegraphics[height=1.2cm]{./images/logos/ASSO_LOGO_CMYK.eps}\par
+	\setlength\fboxsep{0pt}
+	\vskip0.8cm
+	\colorbox{titlegreen}{\hbox to \linewidth{\rule{0pt}{2cm}\hfill}}%
+	
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	This function formats the full preface             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\preface{
+	\pagenumbering{roman}
+	\titlep
+
+	\titleformat{\chapter}[block]
+		{\normalfont\LARGE}	% format for the full title
+		{} %label
+		{0em}	%seperation between label and title body
+		{}	%between label and title
+		[]  %after
+	
+	\if@acknowledgements\if@acknowledgementsdef
+		\chapter*{\@acknowledgementslabel}\addcontentsline{toc}{chapter}{\@acknowledgementslabel} %
+		\@acknowledgementsfile
+	\fi
+	
+	\if@abstract\if@abstractdef
+		\chapter*{Abstract}\addcontentsline{toc}{chapter}{Abstract} %
+		\@abstractfile
+	\fi
+	
+	\if@extendedabstract\if@extendedabstractdef
+		\chapter*{Extended Abstract}\addcontentsline{toc}{chapter}{Extended Abstract} %
+		\@extendedabstractfile
+	\fi
+	
+	\cleardoublepage\phantomsection
+	\addcontentsline{toc}{chapter}{\contentsname}
+	\tableofcontents
+	
+	\if@listoffigurespage
+		\cleardoublepage\phantomsection
+		\addcontentsline{toc}{chapter}{\listfigurename}
+		\listoffigures
+	\fi
+	
+	\if@listoftablespage
+		\cleardoublepage\phantomsection
+		\addcontentsline{toc}{chapter}{\listtablename}
+		\listoftables
+	\fi
+	
+	\if@listofsymbols\if@listofsymbolsdef
+		\chapter*{\@listofsymbolslabel}\addcontentsline{toc}{chapter}{\@listofsymbolslabel} %
+		\@listofsymbolsfile
+	\fi
+	
+	\cleardoublepage
+	\pagenumbering{arabic}
+	
+	\titleformat{\chapter}[block]
+		{\normalfont\Large}	% format for the full title
+		{\thechapter} %label
+		{1em}	%seperation between label and title body
+		{\MakeUppercase}	%between label and title
+		[\titlerule] %after
+}
+
+\endinput

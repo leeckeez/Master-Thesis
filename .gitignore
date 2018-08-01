@@ -1,0 +1,13 @@
+*converted-to.pdf
+*.log
+*.aux
+*.blg
+*.bbl
+*.log
+*.lot
+*.lof
+*.out
+*.ptc
+*.synctex.gz
+*.toc
+thesis.pdf
